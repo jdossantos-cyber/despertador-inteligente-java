@@ -16,10 +16,16 @@ Implementación de la lógica interna (Core de Negocio) de una aplicación de de
 *   **Documentación:** Markdown
 
 ## 4. Instalación y ejecución
-*(Esta sección se completará cuando tengamos la clase Main configurada)*
-1. Clonar el repositorio: `git clone [url-del-repositorio]`
-2. Abrir el proyecto en un IDE compatible con Java (VS Code, IntelliJ, Eclipse).
-3. Ejecutar el archivo `Main.java` ubicado en la ruta `src/main/...`
+Este proyecto está desarrollado puramente en Java sin dependencias externas, por lo que su ejecución se realiza directamente a través de la línea de comandos (terminal).
+
+1. Clonar el repositorio en tu máquina local:
+   `git clone [url-de-tu-repositorio-aqui]`
+2. Abrir la terminal y navegar hasta el directorio raíz del proyecto:
+   `cd despertador-inteligente-java`
+3. Compilar todos los archivos fuente ubicados en la carpeta `src`:
+   `javac src/*.java`
+4. Ejecutar la clase principal para iniciar la simulación en consola:
+   `java -cp src Main`
 
 ## 5. Estructura del proyecto
 *   `/src`: Código fuente en Java.
@@ -158,6 +164,19 @@ flowchart LR
 | **Flujos alternativos** | 3a. El usuario introduce un resultado incorrecto: El sistema indica error, la alarma sigue sonando y genera un nuevo reto matemático. |
 | **Postcondiciones** | La alarma pasa a estado inactivo y se registra el evento en las estadísticas de sueño. |
 | **Reglas de negocio** | El volumen del sonido no se puede reducir ni silenciar mientras el reto matemático no haya sido resuelto. |
+### Decisiones de Arquitectura y Patrones Aplicados
+
+El diseño de este sistema se ha construido siguiendo estrictamente los principios de la Programación Orientada a Objetos (POO), buscando un código limpio, mantenible y escalable, cualidades fundamentales para superar pruebas técnicas en el sector profesional y grandes consultoras tecnológicas.
+
+* **Principio de Responsabilidad Única (SRP):** Se ha evitado crear clases monolíticas. La clase `AlarmManager` actúa exclusivamente como controladora de la colección de alarmas, mientras que `Alarm` gestiona su propio estado interno. Separar lógicas distintas en métodos y clases independientes previene errores de flujo y comportamientos inesperados en el sistema.
+* **Encapsulación estricta:** Todos los atributos de las clases son privados (`private`). El acceso y modificación del estado se realiza a través de métodos controlados (ej. `toggleActive()`), asegurando que ninguna clase externa pueda corromper los datos de una alarma.
+* **Composición frente a Herencia:** En lugar de sobrecargar la clase `Alarm` con toda la lógica de posposición y sonido, se ha utilizado la composición (`*--` en UML). Las clases `SnoozeManager` y `SoundProfile` actúan como componentes independientes. Si en el futuro se desea cambiar el comportamiento del "snooze", el núcleo de la alarma permanecerá intacto.
+* **Herencia y Polimorfismo:** Para las funcionalidades avanzadas (`MathChallenge` y `CircadianMode`), se ha aplicado herencia (`extends Alarm`). Esto permite extender el comportamiento base (como bloquear el apagado hasta resolver un reto matemático) sin llenar la clase principal de sentencias `if/else`, facilitando que `AlarmManager` pueda interactuar con cualquier tipo de alarma de forma transparente.
 
 ## 10. Reflexión sobre IA
-*(Sección reservada para documentar las herramientas de IA utilizadas, prompts exactos, partes de código generadas, errores detectados y cómo se validó manualmente el resultado).*
+Durante el desarrollo de este proyecto, se ha utilizado un asistente de Inteligencia Artificial como herramienta de apoyo educativo y acelerador de productividad, siempre bajo un enfoque de validación crítica y manual. 
+
+* **Depuración de sintaxis UML:** La IA se utilizó para identificar y corregir errores léxicos (`Parse error` y `Lexical error`) en el marcado de los diagramas de Mermaid dentro de los bloques Markdown, asegurando su correcta renderización en GitHub.
+* **Resolución de errores de compilación:** Actuó como guía para interpretar trazas de error en la consola (como `cannot find symbol` o `illegal start of type`). La IA ayudó a entender que el origen de estos fallos radicaba en problemas de alcance (fuera de las llaves del constructor) o en archivos no guardados/encontrados por el compilador de Java.
+* **Estructuración base:** Se empleó para generar los esqueletos iniciales de las clases Java aplicando las directrices del diagrama UML previamente diseñado. 
+* **Validación:** Ningún código generado se implementó a ciegas. Todas las funcionalidades y relaciones de clases se probaron de manera iterativa compilando manualmente a través de la terminal (`javac` y `java`) para comprobar que el flujo de datos cumplía con las reglas de negocio establecidas en los Casos de Uso.
