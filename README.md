@@ -33,6 +33,7 @@ Implementación de la lógica interna (Core de Negocio) de una aplicación de de
 *(Aquí explicaremos las decisiones arquitectónicas: por qué existen las clases, cuáles son sus responsabilidades, relaciones y cómo se maneja la visibilidad de los atributos).*
 
 ## 7. Diagrama de clases UML
+## 7. Diagrama de clases UML
 
 ```mermaid
 classDiagram
@@ -103,7 +104,7 @@ classDiagram
     Alarm <|-- MathChallenge : extiende (reto para apagar)
     Alarm <|-- CircadianMode : extiende (despertar gradual)
 
-
+## 8. Casos de Uso
 flowchart LR
     Actor((Usuario))
 
@@ -134,7 +135,29 @@ flowchart LR
     Crear -. "<< extend >>" .-> Circadiano
     
 ## 9. Reflexión técnica
-*(Sección reservada para el final de la práctica: decisiones de diseño complejas (ej. solapamiento de alarmas, repetición semanal), problemas encontrados, deuda técnica y patrones aplicados).*
+### Especificación Detallada de Casos de Uso
+
+| Caso de Uso | CU-01: Crear Alarma |
+| :--- | :--- |
+| **Objetivo** | Configurar una nueva alarma en el sistema especificando hora, repetición y sonido. |
+| **Actor principal** | Usuario |
+| **Precondiciones** | El sistema (`AlarmManager`) está inicializado. |
+| **Flujo principal** | 1. El usuario solicita crear una nueva alarma.<br>2. Introduce la hora y los minutos.<br>3. Selecciona los días de repetición.<br>4. Elige un perfil de sonido y volumen.<br>5. El sistema guarda la alarma y la marca como activa. |
+| **Flujos alternativos** | 3a. El usuario no selecciona días de repetición: La alarma se configura para sonar una única vez (próximas 24h).<br>5a. Conflicto de horario: El sistema detecta otra alarma a la misma hora y lanza una advertencia. |
+| **Postcondiciones** | La alarma queda registrada en la lista de alarmas y programada para sonar. |
+| **Reglas de negocio** | No se permite crear dos alarmas con la misma configuración exacta (hora y días de repetición). |
+
+<br>
+
+| Caso de Uso | CU-02: Resolver Reto Matemático (Funcionalidad Avanzada) |
+| :--- | :--- |
+| **Objetivo** | Obligar al usuario a resolver un problema matemático para poder detener la alarma, asegurando que está despierto. |
+| **Actor principal** | Usuario |
+| **Precondiciones** | Una alarma con la funcionalidad de "Reto Matemático" activada está sonando. |
+| **Flujo principal** | 1. El usuario intenta detener la alarma.<br>2. El sistema genera y muestra una operación matemática aleatoria.<br>3. El usuario introduce el resultado correcto.<br>4. La alarma se detiene completamente. |
+| **Flujos alternativos** | 3a. El usuario introduce un resultado incorrecto: El sistema indica error, la alarma sigue sonando y genera un nuevo reto matemático. |
+| **Postcondiciones** | La alarma pasa a estado inactivo y se registra el evento en las estadísticas de sueño. |
+| **Reglas de negocio** | El volumen del sonido no se puede reducir ni silenciar mientras el reto matemático no haya sido resuelto. |
 
 ## 10. Reflexión sobre IA
 *(Sección reservada para documentar las herramientas de IA utilizadas, prompts exactos, partes de código generadas, errores detectados y cómo se validó manualmente el resultado).*
