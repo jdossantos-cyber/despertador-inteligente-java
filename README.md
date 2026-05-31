@@ -33,13 +33,106 @@ Implementación de la lógica interna (Core de Negocio) de una aplicación de de
 *(Aquí explicaremos las decisiones arquitectónicas: por qué existen las clases, cuáles son sus responsabilidades, relaciones y cómo se maneja la visibilidad de los atributos).*
 
 ## 7. Diagrama de clases UML
-*(Aquí insertaremos el código Mermaid o la imagen PlantUML con nuestro diagrama de clases justificado).*
 
-## 8. Casos de Uso (Diagrama y Especificación)
-*(Aquí añadiremos el diagrama de casos de uso y la tabla con la plantilla de: Actor, Precondiciones, Flujo Principal, Alternativas, etc.).*
+```mermaid
+classDiagram
+    class AlarmManager {
+        -List~Alarm~ alarms
+        -SleepStatistics stats
+        +addAlarm(Alarm a)
+        +removeAlarm(String id)
+        +toggleAlarm(String id)
+        +getUpcomingAlarms() List~Alarm~
+        +checkConflicts(Alarm a) boolean
+    }
 
----
+    class Alarm {
+        -String id
+        -LocalTime time
+        -String label
+        -boolean isActive
+        -boolean[] repeatDays
+        -SoundProfile sound
+        -SnoozeManager snoozeManager
+        +trigger()
+        +stop()
+        +snooze()
+    }
 
+    class SoundProfile {
+        -String toneName
+        -int volumeLevel
+        -boolean dynamicWeatherSound
+        +play()
+        +increaseVolumeGradually()
+    }
+
+    class SnoozeManager {
+        -int snoozeDurationMinutes
+        -int maxSnoozeCount
+        -int currentSnoozeCount
+        +canSnooze() boolean
+        +executeSnooze()
+    }
+
+    class SleepStatistics {
+        -int totalHoursSlept
+        -int totalSnoozes
+        +recordSnooze()
+        +recordWakeUpTime(LocalTime time)
+        +generateReport() String
+    }
+
+    class MathChallenge {
+        -String difficulty
+        +generateProblem() String
+        +verifyAnswer(int answer) boolean
+    }
+
+    class CircadianMode {
+        -int fadeUpDurationMinutes
+        -int currentBrightness
+        +simulateSunrise()
+        +triggerProgressiveWakeUp()
+    }
+
+    AlarmManager "1" *-- "*" Alarm : gestiona
+    AlarmManager "1" --> "1" SleepStatistics : registra
+    Alarm "1" *-- "1" SoundProfile : contiene
+    Alarm "1" *-- "1" SnoozeManager : maneja
+    Alarm <|-- MathChallenge : extiende (reto para apagar)
+    Alarm <|-- CircadianMode : extiende (despertar gradual)
+
+
+flowchart LR
+    Actor((Usuario))
+
+    %% Casos de Uso Principales
+    Crear[Crear Alarma]
+    Gestionar[Activar/Desactivar/Eliminar Alarma]
+    Configurar[Configurar Sonido y Repetición]
+    Posponer[Posponer Alarma snooze]
+    Detener[Detener Alarma]
+    Consultar[Consultar Próximas Alarmas]
+    Stats[Consultar Estadísticas de Sueño]
+
+    %% Funcionalidades Avanzadas
+    Reto[Resolver Reto Matemático]
+    Circadiano[Configurar Modo Circadiano]
+
+    %% Relaciones del Actor
+    Actor --> Crear
+    Actor --> Gestionar
+    Actor --> Posponer
+    Actor --> Detener
+    Actor --> Consultar
+    Actor --> Stats
+
+    %% Relaciones Include y Extend
+    Crear -. "<< include >>" .-> Configurar
+    Detener -. "<< extend >>" .-> Reto
+    Crear -. "<< extend >>" .-> Circadiano
+    
 ## 9. Reflexión técnica
 *(Sección reservada para el final de la práctica: decisiones de diseño complejas (ej. solapamiento de alarmas, repetición semanal), problemas encontrados, deuda técnica y patrones aplicados).*
 
