@@ -32,7 +32,7 @@ Implementación de la lógica interna (Core de Negocio) de una aplicación de de
 ## 6. Diseño orientado a objetos
 *(Aquí explicaremos las decisiones arquitectónicas: por qué existen las clases, cuáles son sus responsabilidades, relaciones y cómo se maneja la visibilidad de los atributos).*
 
-## 7. Diagrama de clases UML
+
 ## 7. Diagrama de clases UML
 
 ```mermaid
