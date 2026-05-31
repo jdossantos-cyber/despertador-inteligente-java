@@ -103,7 +103,7 @@ classDiagram
     Alarm "1" *-- "1" SnoozeManager : maneja
     Alarm <|-- MathChallenge : extiende (reto para apagar)
     Alarm <|-- CircadianMode : extiende (despertar gradual)
-
+```
 ## 8. Casos de Uso
 flowchart LR
     Actor((Usuario))
