@@ -7,17 +7,20 @@ public class Alarm {
     private String label;
     private boolean isActive;
     
-    // Aquí aplicamos la composición
+    // Clases que componen la alarma
     private SnoozeManager snoozeManager;
+    private SoundProfile sound;
     
+    // Constructor
     public Alarm(LocalTime time, String label) {
         this.id = UUID.randomUUID().toString();
         this.time = time;
         this.label = label;
         this.isActive = true; 
         
-        // Configuramos por defecto: posponer 5 minutos, máximo 3 veces
+        // Inicializamos las piezas (Composición)
         this.snoozeManager = new SnoozeManager(5, 3);
+        this.sound = new SoundProfile("Marimba", 50, false);
     }
 
     public String getId() {
@@ -40,7 +43,6 @@ public class Alarm {
         this.isActive = !this.isActive;
     }
 
-    // Nuevo método para posponer
     public void snooze() {
         if (isActive) {
             System.out.println("Intentando posponer la alarma '" + label + "'...");
