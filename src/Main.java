@@ -6,18 +6,23 @@ public class Main {
 
         AlarmManager manager = new AlarmManager();
 
-        Alarm alarm1 = new Alarm(LocalTime.of(7, 30), "Despertar para clase");
-        manager.addAlarm(alarm1);
+        // Creamos una alarma con reto matemático
+        MathChallenge mathAlarm = new MathChallenge(LocalTime.of(6, 0), "Despertar extremo", "Fácil");
+        manager.addAlarm(mathAlarm);
 
         manager.printUpcomingAlarms();
 
-        // Simulamos que suena la alarma y el usuario la pospone
-        System.out.println("¡RIIIING! Suena la alarma.");
-        alarm1.snooze(); // Posposición 1
-        alarm1.snooze(); // Posposición 2
-        alarm1.snooze(); // Posposición 3 (Última permitida)
+        System.out.println("¡RIIIING! Intentando apagar la alarma de forma normal...");
+        mathAlarm.toggleActive(); // Esto debería bloquearnos
         
-        // Esta vez debería bloquearlo porque superó el límite
-        alarm1.snooze(); 
+        System.out.println("\nGenerando reto matemático...");
+        System.out.println(mathAlarm.generateProblem());
+
+        // Simulamos que el usuario falla la primera vez
+        System.out.println("\nUsuario introduce: 99");
+        mathAlarm.verifyAnswer(99);
+
+        // Para simular que acierta, tendríamos que meter la respuesta correcta. 
+        // Como es aleatoria en esta prueba, puedes ver que el sistema avisa del error.
     }
 }
