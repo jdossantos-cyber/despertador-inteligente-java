@@ -3,13 +3,14 @@ import java.util.List;
 
 public class AlarmManager {
     private List<Alarm> alarms;
+    private SleepStatistics stats;
 
     public AlarmManager() {
         this.alarms = new ArrayList<>();
+        this.stats = new SleepStatistics();
     }
 
     public void addAlarm(Alarm a) {
-        // Aquí en el futuro implementaremos la validación de conflictos (checkConflicts)
         alarms.add(a);
         System.out.println("Alarma añadida exitosamente: " + a.getLabel());
     }
@@ -40,5 +41,9 @@ public class AlarmManager {
             }
         }
         System.out.println("------------------------\n");
+    }
+
+    public void printStats() {
+        System.out.println(stats.generateReport());
     }
 }

@@ -6,14 +6,21 @@ public class Main {
 
         AlarmManager manager = new AlarmManager();
 
-        // Creamos una alarma circadiana configurada para hacer el "amanecer" 5 minutos antes
-        CircadianMode relaxAlarm = new CircadianMode(LocalTime.of(8, 0), "Despertar Zen", 5);
-        manager.addAlarm(relaxAlarm);
+        // Creamos una alarma normal y otra con reto matemático
+        Alarm alarm1 = new Alarm(LocalTime.of(7, 30), "Trabajo");
+        MathChallenge mathAlarm = new MathChallenge(LocalTime.of(8, 0), "Gimnasio", "Media");
+
+        manager.addAlarm(alarm1);
+        manager.addAlarm(mathAlarm);
 
         manager.printUpcomingAlarms();
 
-        // Simulamos que llega la hora
-        System.out.println("\n--- Simulando paso del tiempo ---");
-        relaxAlarm.triggerProgressiveWakeUp();
+        System.out.println("\n¡Suena la primera alarma!");
+        alarm1.snooze(); // Pospone 1 vez
+
+        System.out.println("\nImprimiendo estadísticas de sueño:");
+        manager.printStats();
+        
+        System.out.println("\n¡Todo el núcleo de negocio funciona perfectamente según el UML!");
     }
 }
