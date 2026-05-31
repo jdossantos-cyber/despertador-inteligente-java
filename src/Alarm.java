@@ -2,21 +2,24 @@ import java.time.LocalTime;
 import java.util.UUID;
 
 public class Alarm {
-    // Atributos privados para garantizar la encapsulación
     private String id;
     private LocalTime time;
     private String label;
     private boolean isActive;
     
-    // Constructor
+    // Aquí aplicamos la composición
+    private SnoozeManager snoozeManager;
+    
     public Alarm(LocalTime time, String label) {
-        this.id = UUID.randomUUID().toString(); // Genera un ID único automáticamente
+        this.id = UUID.randomUUID().toString();
         this.time = time;
         this.label = label;
-        this.isActive = true; // Por defecto, al crearla está activa
+        this.isActive = true; 
+        
+        // Configuramos por defecto: posponer 5 minutos, máximo 3 veces
+        this.snoozeManager = new SnoozeManager(5, 3);
     }
 
-    // Métodos públicos (Getters y lógica básica)
     public String getId() {
         return id;
     }
@@ -35,6 +38,16 @@ public class Alarm {
 
     public void toggleActive() {
         this.isActive = !this.isActive;
+    }
+
+    // Nuevo método para posponer
+    public void snooze() {
+        if (isActive) {
+            System.out.println("Intentando posponer la alarma '" + label + "'...");
+            snoozeManager.executeSnooze();
+        } else {
+            System.out.println("La alarma está desactivada, no se puede posponer.");
+        }
     }
 
     @Override
